@@ -1,0 +1,87 @@
+﻿<Page 
+    x:Class="BaiDuWeatherApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BaiDuWeatherApp"
+    xmlns:Utils="using:BaiDuWeatherApp.Utils"
+    xmlns:viewModels="using:BaiDuWeatherApp.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"    
+    DataContext="{Binding vmMainpage,RelativeSource={RelativeSource Mode=Self}}"
+    d:DataContext="{d:DesignInstance Type=viewModels:MainPageViewModel,IsDesignTimeCreatable=True}" MinHeight="650"
+    >
+
+    <Page.Resources>
+        <Utils:PM25Converter x:Key="pm25Converter"/>
+        <Utils:DayOrNightConvert x:Key="dayOrNightConvert"/>
+        <Style x:Key="lvStretch" TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        <ProgressRing IsActive="{Binding Loading}"/>
+        <Canvas Width="50" Margin="5,10,20,0" HorizontalAlignment="Right" Grid.Column="1" Grid.RowSpan="2">
+            <Ellipse x:Name="ball" Width="50" Height="50" Canvas.Top="5" Canvas.Left="5" Fill="Red" Tapped="ball_Tapped"/>
+        </Canvas>
+        <Grid DataContext="{Binding BDWeatherInfoModel[0].results[0]}" BorderBrush="WhiteSmoke" BorderThickness="0,0,3,0" Margin="5,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock HorizontalAlignment="Left" Margin="15,0,0,0" Text="{Binding weather_data[0].date}" Grid.ColumnSpan="2" FontSize="12" Opacity="0.8"/>
+            <Image Source="{Binding weather_data[0],Converter={StaticResource dayOrNightConvert}}" Width="50" Height="50" Grid.Row="1" Grid.RowSpan="2"/>
+            <!--<TextBlock Text="{x:Bind vmMainpage.BDWeatherInfoModel[0].results[0].weather_data[0].temperature}" Grid.Row="1" Grid.Column="1" FontSize="25" FontWeight="Bold"/>-->
+            <TextBlock Text="{Binding weather_data[0].temperature}" Grid.Row="1" Grid.Column="1" FontSize="25" FontWeight="Bold"/>
+            <TextBlock Text="{Binding weather_data[0].wind}" Grid.Row="2" Grid.Column="1" />
+            <TextBlock Text="{Binding pm25,Converter={StaticResource pm25Converter}}" Grid.Row="3" Grid.Column="1" />
+            <TextBlock Text="{Binding weather_data[0].weather}" Grid.Row="3"/>
+        </Grid>
+        <ListView ItemContainerStyle="{StaticResource lvStretch}" ItemsSource="{Binding NotTodayDataModel[0]}" Grid.Row="1" BorderBrush="WhiteSmoke" BorderThickness="0,0,3,0">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid BorderBrush="WhiteSmoke" BorderThickness="0,3,0,0">
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding date}"/>
+                        <TextBlock Text="{Binding temperature}" Grid.Column="1"/>
+                        <Image Source="{Binding Converter={StaticResource dayOrNightConvert}}" Width="35" Height="35" Grid.Row="1" Grid.RowSpan="2"/>
+                        <TextBlock Text="{Binding weather}" Grid.Row="1" Grid.Column="1"/>
+                        <TextBlock Text="{Binding wind}" Grid.Row="2" Grid.Column="1"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>

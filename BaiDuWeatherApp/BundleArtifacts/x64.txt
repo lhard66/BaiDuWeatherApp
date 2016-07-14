@@ -1,0 +1,2 @@
+MainPackage=E:\MyDocument\BaiDuWeatherApp\BaiDuWeatherApp\bin\x64\Debug\BaiDuWeatherApp_1.0.0.0_x64_Debug.appx
+SymbolPackage=E:\音乐\BaiDuWeatherApp_1.0.0.0_Debug_Test\BaiDuWeatherApp_1.0.0.0_x64_Debug.appxsym
