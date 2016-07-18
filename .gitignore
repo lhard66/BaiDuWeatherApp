@@ -2,3 +2,5 @@
 /BaiDuWeatherApp/obj/*
 /BaiDuWeatherApp/UWPBook.csproj.user
 /BaiDuWeatherApp.suo
+bin
+obj
